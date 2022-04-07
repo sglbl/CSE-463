@@ -30,12 +30,13 @@ class PointSaver:
         cv.destroyAllWindows()
 
     def savePoints(self, event, x, y, flag, param):
-        cv.putText(self.img, "Click on the northwest corner of the field", (11, 20), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
+        cv.putText(self.img, "Click on the northwest corner", (11, 20), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
+        cv.putText(self.img, "(Think long side as horizontal side)", (11, 40), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
         if event == cv.EVENT_LBUTTONDOWN:
             self.counter = self.counter + 1
-            if(self.counter == 1): cv.putText(self.img, "Click on the northeast corner of the field", (11,40), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
-            if(self.counter == 2): cv.putText(self.img, "Click on the southeast corner of the field", (11,60), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
-            if(self.counter == 3): cv.putText(self.img, "Click on the southwest corner of the field", (11,80), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
+            if(self.counter == 1): cv.putText(self.img, "Click on the northeast corner of the field", (11,60), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
+            if(self.counter == 2): cv.putText(self.img, "Click on the southeast corner of the field", (11,80), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
+            if(self.counter == 3): cv.putText(self.img, "Click on the southwest corner of the field", (11,100), cv.FONT_HERSHEY_PLAIN, 1.0, (139,14,252), 1) 
             print(f"X coordinate is {x} and y coordinate is {y}")
             self.point.append([x,y])
             cv.circle(self.img, (x,y), 7, (255,0,0), -1)
@@ -44,8 +45,7 @@ class PointSaver:
                 print("4 points are selected")
                 cv.destroyAllWindows()
                 Homography.Homography(self.point, self.inputPath, 'images/modelSoccerField.jpg')
-                return
-                
+                return    
     
     def filePathFinder(self):
         currdir = os.getcwd()

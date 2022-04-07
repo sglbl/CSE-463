@@ -1,5 +1,5 @@
 import tkinter as tk # To create the buttons and labels
-import PointSaving
+import PointSaving   # Saving all the points
 
 if __name__=='__main__':
 
