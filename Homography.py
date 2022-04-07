@@ -102,11 +102,11 @@ class Homography:
         print("Interpolating")
         for i in range(matrix.shape[0]): # for every row of height
             # matrix[i] is a row of the matrix which is 2d.
-            y,x = np.where(matrix[i]!=0)   # If matrix[i] is not zero, then get the index of non-zero values
-            xVector = np.linspace(np.min(x), np.max(x), 3) # create evenly spaced sample number of dimension(3) times.
-            yVector = np.linspace(np.min(y), np.max(y), matrix.shape[1]) # Create evenly spaced sample 'width'(matrix.shape[1]) number of points
-            xCoordMatrix, yCoordMatrix = np.meshgrid(xVector, yVector)   # Return coordinate matrices from coordinate vectors xx and yy
-            matrix[i] = scipy.interpolate.griddata( (x,y), matrix[i][matrix[i]!=0], (xCoordMatrix, yCoordMatrix), method='nearest') 
+            # y,x = np.where(matrix[i]!=0)   # If matrix[i] is not zero, then get the index of non-zero values
+            # xVector = np.linspace(np.min(x), np.max(x), 3) # create evenly spaced sample number of dimension(3) times.
+            # yVector = np.linspace(np.min(y), np.max(y), matrix.shape[1]) # Create evenly spaced sample 'width'(matrix.shape[1]) number of points
+            # xCoordMatrix, yCoordMatrix = np.meshgrid(xVector, yVector)   # Return coordinate matrices from coordinate vectors xx and yy
+            # matrix[i] = scipy.interpolate.griddata( (x,y), matrix[i][matrix[i]!=0], (xCoordMatrix, yCoordMatrix), method='nearest') 
             image[:,i] = matrix[i]   # 2d matrix[i] is a row of the image matrix
 
         return image
