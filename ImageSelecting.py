@@ -17,13 +17,13 @@ class ImageSelector:
             cv.destroyAllWindows()
             return
 
-        if(self.images[0] is not None 
-            and self.images[0] != "" 
-            and self.images[1] is not None
-            and self.images[1] != ""
-        ):
-            print("Both images are selected")
-            objectDetector = ObjectDetecting.ObjectDetector()
+        if( (self.images[0] is not None and self.images[1] is not None)):
+            # Throws unnecessary futurewarning here. (It's a bug: ) 
+            print("len is ", len(self.images[0]))
+            print("len1 is ", len(self.images[1]))
+            if(len(self.images[0]) != 0 and len(self.images[1]) != 0):
+                    print("Both images are selected")
+            # objectDetector = ObjectDetecting.ObjectDetector()
             # cv.namedWindow('image')  # Putting name to window
 
             # Showing the image
@@ -35,7 +35,6 @@ class ImageSelector:
             #     if( cv.getWindowProperty('image', cv.WND_PROP_VISIBLE) < 1 ): # If X button is pressed, then exit
             #         break
             # cv.destroyAllWindows()
-
 
     def filePathFinder(self):
         currdir = os.getcwd()
