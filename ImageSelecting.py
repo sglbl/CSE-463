@@ -18,12 +18,10 @@ class ImageSelector:
             return
 
         if( (self.images[0] is not None and self.images[1] is not None)):
-            # Throws unnecessary futurewarning here. (It's a bug: ) 
-            print("len is ", len(self.images[0]))
-            print("len1 is ", len(self.images[1]))
             if(len(self.images[0]) != 0 and len(self.images[1]) != 0):
-                    print("Both images are selected")
-            # objectDetector = ObjectDetecting.ObjectDetector()
+                print("Both images are selected")
+                ObjectDetecting.ObjectDetector(self.images[0], self.images[1]) # Calling object detector
+
             # cv.namedWindow('image')  # Putting name to window
 
             # Showing the image

@@ -4,38 +4,30 @@ import scipy.interpolate # to interpolate a matrix
 import tkinter as tk
 
 class ObjectDetector:
-    def __init__(self, pointsOfInput, srcImagePath, destImagePath) -> None:
-        self.pointsOfInput = pointsOfInput
-        self.pointsOfOutput = []
-
+    def __init__(self, image1, image2) -> None:
         sift = cv.SIFT_create()
+
+        # Converting images to grayscale for detection
+        img1 = cv.cvtColor(image1, cv.COLOR_BGR2GRAY)
+        img2 = cv.cvtColor(image2, cv.COLOR_BGR2GRAY)
+
+        keyPoint1, descriptor1 = sift.detectAndCompute(img1, None)
+        keyPoint2, descriptor2 = sift.detectAndCompute(img2, None)
+
+        # Finding the matches between the two images
+        bf = cv.BFMatcher()
+        matches = bf.knnMatch(descriptor1, descriptor2, k=2)
+        goodMatches = []
+        for m,n in matches:
+            if m.distance < 0.75*n.distance:
+                goodMatches.append(m)
+        print(len(goodMatches))
+        # Drawing the matches
+        img3 = cv.drawMatches(img1, keyPoint1, img2, keyPoint2, goodMatches, None)
+        cv.imshow("Matches", img3)
         
-        # Read source image.
-        srcImage = cv.imread(srcImagePath)
-        # Four corners of the book in source image
-        srcPoints = np.array(pointsOfInput, np.float32)
 
-        # Read destination image.
-        destImage = cv.imread(destImagePath)
 
-        # Four corners of the book in destination image.
-        print(f"Size of destination image (h and w): {destImage.shape}")
-
-        destPoint1 = [1, 1];     destPoint2 = [destImage.shape[1]-1, 1];     destPoint3 = [destImage.shape[1]-1, destImage.shape[0]-1];
-        destPoints = np.array(
-                        [   destPoint1,
-                            destPoint2,
-                            destPoint3, # [1, 700/383]
-                            self.find4thPointByIntersectionOfParallelLines(destPoint1, destPoint2, destPoint3)
-                        ], np.float32)
-        
-        homographyMatrix, status = cv.findHomography(srcPoints, destPoints) # Homography matrix
-
-        final = self.sg_warpPerspective(srcImage, homographyMatrix, int(destImage.shape[1]), int(destImage.shape[0])) # width x height
-
-        # Display images
-        # cv.imshow("Destination Image", destImage)
-        self.showImagesTogether(srcImage, final)
 
         cv.waitKey(0)
 
