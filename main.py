@@ -15,15 +15,15 @@ if __name__=='__main__':
     selectedButtonNo.set(1)
     R1 = tk.Radiobutton(rootWidget, text="Sift and Flann", variable=selectedButtonNo, value=1, font=("Helvetica", 15), 
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
-    R1.pack( anchor = tk.W )
+    R1.pack( anchor = tk.W)
 
     R2 = tk.Radiobutton(rootWidget, text="Corner Feature", variable=selectedButtonNo, value=2, font=("Helvetica", 15),
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
-    R2.pack( anchor = tk.W, side = "top")
+    R2.pack( anchor = tk.W)
 
     R3 = tk.Radiobutton(rootWidget, text="Edge Feature", variable=selectedButtonNo, value=3, font=("Helvetica", 15),
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
-    R3.pack( anchor = tk.W, side = "top")
+    R3.pack( anchor = tk.W)
 
     buttonImage1 = tk.Button( rootWidget, text = 'Click to get image of left camera', font=("Helvetica", 15), 
                               command = lambda : selectorObject.imageSelector(1) )
@@ -33,16 +33,5 @@ if __name__=='__main__':
     # Set the position of button on the top of window
     buttonImage1.pack(anchor = tk.CENTER)
     buttonImage2.pack(anchor = tk.CENTER)
-
-    implementMode = tk.IntVar()
-    implementMode.set(2)
-    R1 = tk.Radiobutton(rootWidget, text="OpenCV Disp Imp", variable=implementMode, value=1, font=("Helvetica", 15), 
-                    command = lambda : selectorObject.implementButtonSelector(implementMode))
-    R1.pack( anchor = tk.E )
-
-    R2 = tk.Radiobutton(rootWidget, text="User Disp Imp", variable=implementMode, value=2, font=("Helvetica", 15),
-                    command = lambda : selectorObject.implementButtonSelector(implementMode))
-    R2.pack( anchor = tk.E )
-
 
     rootWidget.mainloop()

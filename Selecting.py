@@ -9,15 +9,11 @@ class Selector:
         self.inputPathOfImages = ["",""]
         self.images = ["",""]
         self.buttonNo = 1
-        self.implementationButtonNo = 2
     
     def buttonSelector(self, buttonNo):
         print("You selected the option " + str(buttonNo.get()))
         self.buttonNo = buttonNo.get()
         
-    def implementButtonSelector(self, implementationButtonNo):
-        self.implementationButtonNo = implementationButtonNo.get()
-
     def imageSelector(self, imageNumber):
         self.inputPathOfImages[imageNumber-1] = self.filePathFinder()
         self.images[imageNumber-1] = cv.imread(self.inputPathOfImages[imageNumber-1]) # Read the image
@@ -29,7 +25,7 @@ class Selector:
         if( (self.images[0] is not None and self.images[1] is not None)):
             if(len(self.images[0]) != 0 and len(self.images[1]) != 0):
                 print("Both images are selected")
-                Corresponding.Correspondence(self.images[0], self.images[1], self.buttonNo, self.implementationButtonNo) # Calling correspondence class
+                Corresponding.Correspondence(self.images[0], self.images[1], self.buttonNo) # Calling correspondence class
 
     def filePathFinder(self):
         currdir = os.getcwd()
