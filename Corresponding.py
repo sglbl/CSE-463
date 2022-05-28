@@ -9,7 +9,7 @@ class Correspondence:
         if(featureButtonNo == 2):
             self.orbFlannCorrespondence(image1, image2)
         if(featureButtonNo == 3):
-            self.cornerCorrespondence(image1, image2)    
+            self.edgeWithOrbCorrespondence(image1, image2)
 
     ####### SIFT WITH BRUTE FORCE ########
     def siftBFCorrespondence(self, image1, image2):
@@ -123,7 +123,7 @@ class Correspondence:
         cv.imshow("Disparity map from OpenCV", dispmap_bm / 255)
 
     ####### STEREO DISPARITY WITH HARRIS CORNER ########
-    def cornerCorrespondence(self, image1, image2):
+    def edgeWithOrbCorrespondence(self, image1, image2):
         # Turning them into grayscale
         grayscaleImage1, grayscaleImage2 = self.imagesToGrayscale(image1, image2)
 
@@ -136,11 +136,10 @@ class Correspondence:
 
         keyPoints1, descriptors1 = orb.detectAndCompute(edgeImage1, None)
         keyPoints2, descriptors2 = orb.detectAndCompute(edgeImage2, None)
-
-        goodMatches = self.matcherAndSorter(descriptors1, descriptors2)
-        # matches = self.goodMatchFinder(descriptors1, descriptors2)
         
-        imageOfMatches = cv.drawMatchesKnn(edgeImage1, keyPoints1, edgeImage2, keyPoints2, goodMatches, None, flags=2)
+        goodMatches = self.goodMatchFinder(descriptors1, descriptors2)
+        imageOfMatches= cv.drawMatches(edgeImage1, keyPoints1, edgeImage2, keyPoints2, goodMatches, None ,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+        
         cv.imshow("Image of Matches", imageOfMatches)
         
         # Disparity calculation
@@ -148,17 +147,19 @@ class Correspondence:
         disparity_map = np.zeros( (height, width) )
 
         for match in goodMatches:
-            (x_img1, y_img1) = keyPoints1[match[0].queryIdx].pt # left image
-            (x_img2, y_img2) = keyPoints2[match[0].trainIdx].pt # right image
+            (x_img1, y_img1) = keyPoints1[match.queryIdx].pt # left image
+            (x_img2, y_img2) = keyPoints2[match.trainIdx].pt # right image
             x_img1 = int(x_img1);   x_img2 = int(x_img2)
             y_img1 = int(y_img1);   y_img2 = int(y_img2)
-            disparity = 8*abs(x_img2 - x_img1)
+            disparity = 8 * abs(x_img2 - x_img1)
             if( disparity > 255 ):
                 disparity = 255
             disparity_map[y_img1][x_img1] = disparity
             print("Location on images:", (x_img1, y_img1), (x_img2, y_img2), " Disparity: ", disparity)
 
         cv.imshow("Real left image", image1)
+        # plt.imshow(disparity_map, cmap='hot')
+        # plt.show()
         cv.imshow("My disparity map", disparity_map)
         # Ground truth disparity
         stereo_bm = cv.StereoBM_create(numDisparities=16, blockSize=15)
