@@ -124,35 +124,23 @@ class Correspondence:
 
     ####### STEREO DISPARITY WITH HARRIS CORNER ########
     def cornerCorrespondence(self, image1, image2):
+        # Turning them into grayscale
         grayscaleImage1, grayscaleImage2 = self.imagesToGrayscale(image1, image2)
-        coordinates1 = self.harris(grayscaleImage1)
-        coordinates2 = self.harris(grayscaleImage2)
 
-        # convert coordinates to Keypoint type
-        keyPoints1 = [cv.KeyPoint(crd[0], crd[1], 13) for crd in coordinates1]
-        # print("Keypoints are", keyPoints1)
+        # Edge feature extraction 
+        # detecting GRADIENT OF GAUSSIAN (canny)
+        edgeImage1 = cv.Canny(grayscaleImage1, 125, 175)
+        edgeImage2 = cv.Canny(grayscaleImage2, 125, 175)
 
-        # compute SIFT descriptors from corner keypoints
-        sift = cv.SIFT_create()
-        # print("first desc is", sift.compute(grayscaleImage1, coordinates1[0])[1]  )
-        descriptors1 = [sift.compute(grayscaleImage1, [kp])[1] for kp in coordinates1]
-        # descriptors1 = sift.compute(image1, keyPoints1)
-        print("type of desc is ", type(descriptors1), "\ndesc is \n", descriptors1)
+        orb = cv.ORB_create()
 
-        ##########################################################
-
-        keyPoints2 = [cv.KeyPoint(crd[0], crd[1], 13) for crd in coordinates2]
-
-        # compute SIFT descriptors from corner keypoints
-        sift = cv.SIFT_create()
-        descriptors2 = [sift.compute(grayscaleImage2, [kp])[1] for kp in coordinates2]
-        # descriptors2 = sift.compute(image2, keyPoints2)
+        keyPoints1, descriptors1 = orb.detectAndCompute(edgeImage1, None)
+        keyPoints2, descriptors2 = orb.detectAndCompute(edgeImage2, None)
 
         goodMatches = self.matcherAndSorter(descriptors1, descriptors2)
         # matches = self.goodMatchFinder(descriptors1, descriptors2)
-        # goodMatches = matches
         
-        imageOfMatches = cv.drawMatchesKnn(image1, keyPoints1, image2, keyPoints2, goodMatches, None, flags=2)
+        imageOfMatches = cv.drawMatchesKnn(edgeImage1, keyPoints1, edgeImage2, keyPoints2, goodMatches, None, flags=2)
         cv.imshow("Image of Matches", imageOfMatches)
         
         # Disparity calculation
@@ -177,57 +165,3 @@ class Correspondence:
         dispmap_bm = stereo_bm.compute(grayscaleImage1, grayscaleImage2)
         cv.imshow("Disparity map from OpenCV", dispmap_bm / 255)
 
-
-        
-
-
-    def harris(self,imagePath):       
-        # Read in the image
-        image = imagePath #çç
-
-        # Make a copy of the image
-        image_copy = np.copy(image)
-
-        # Change color to RGB (from BGR)
-        image_copy = cv.cvtColor(image_copy, cv.COLOR_BGR2RGB)
-
-        plt.imshow(image_copy)
-
-        # ### Detect corners
-
-        # Convert to grayscale
-        gray = cv.cvtColor(image_copy, cv.COLOR_RGB2GRAY)
-        gray = np.float32(gray)
-
-        # Detect corners 
-        dst = cv.cornerHarris(gray, 2, 3, 0.04)
-
-        # Dilate corner image to enhance corner points
-        dst = cv.dilate(dst,None)
-
-        cv.imshow("dst", dst)
-        # plt.imshow(dst, cmap='gray')
-        # plt.show()
-
-        # ### Extract and display strong corners
-
-        # This value vary depending on the image and how many corners you want to detect
-        # Try changing this free parameter, 0.1, to be larger or smaller and see what happens
-        thresh = 0.1*dst.max()
-
-        # Create an image copy to draw corners on
-        corner_image = np.copy(image_copy)
-
-        ijValues = []
-        # Iterate through all the corners and draw them on the image (if they pass the threshold)
-        for j in range(0, dst.shape[0]):
-            for i in range(0, dst.shape[1]):
-                if(dst[j,i] > thresh):
-                    # image, center pt, radius, color, thickness
-                    ijValues.append( (i,j) ) 
-                    cv.circle( corner_image, (i, j), 1, (0,255,0), 1)
-
-        # plt.imshow(corner_image)
-        # plt.show()
-        cv.imshow("Corner img", corner_image)
-        return ijValues
