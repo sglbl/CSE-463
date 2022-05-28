@@ -122,7 +122,7 @@ class Correspondence:
         dispmap_bm = stereo_bm.compute(grayscaleImage1, grayscaleImage2)
         cv.imshow("Disparity map from OpenCV", dispmap_bm / 255)
 
-    ####### STEREO DISPARITY WITH HARRIS CORNER ########
+    ####### STEREO DISPARITY WITH EDGE DETECTOR CANNY / GRADIENT OF GAUSSIAN ########
     def edgeWithOrbCorrespondence(self, image1, image2):
         # Turning them into grayscale
         grayscaleImage1, grayscaleImage2 = self.imagesToGrayscale(image1, image2)
