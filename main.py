@@ -13,15 +13,15 @@ if __name__=='__main__':
 
     selectedButtonNo = tk.IntVar()
     selectedButtonNo.set(1)
-    R1 = tk.Radiobutton(rootWidget, text="Sift and Flann", variable=selectedButtonNo, value=1, font=("Helvetica", 15), 
+    R1 = tk.Radiobutton(rootWidget, text="Sift with BF", variable=selectedButtonNo, value=1, font=("Helvetica", 15), 
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
     R1.pack( anchor = tk.W)
 
-    R2 = tk.Radiobutton(rootWidget, text="Corner Feature", variable=selectedButtonNo, value=2, font=("Helvetica", 15),
+    R2 = tk.Radiobutton(rootWidget, text="ORB with Flann", variable=selectedButtonNo, value=2, font=("Helvetica", 15),
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
     R2.pack( anchor = tk.W)
 
-    R3 = tk.Radiobutton(rootWidget, text="Edge Feature", variable=selectedButtonNo, value=3, font=("Helvetica", 15),
+    R3 = tk.Radiobutton(rootWidget, text="Corner Feature", variable=selectedButtonNo, value=3, font=("Helvetica", 15),
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
     R3.pack( anchor = tk.W)
 
