@@ -21,7 +21,7 @@ if __name__=='__main__':
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
     R2.pack( anchor = tk.W)
 
-    R3 = tk.Radiobutton(rootWidget, text="Edge Feature", variable=selectedButtonNo, value=3, font=("Helvetica", 15),
+    R3 = tk.Radiobutton(rootWidget, text="Edge with Fast Brief NH ", variable=selectedButtonNo, value=3, font=("Helvetica", 15),
                     command = lambda : selectorObject.buttonSelector(selectedButtonNo))
     R3.pack( anchor = tk.W)
 

@@ -9,7 +9,7 @@ class Correspondence:
         if(featureButtonNo == 2):
             self.orbFlannCorrespondence(image1, image2)
         if(featureButtonNo == 3):
-            self.edgeWithOrbCorrespondence(image1, image2)
+            self.edgeFastBriefNormHammingCorrespondence(image1, image2)
 
     ####### SIFT WITH BRUTE FORCE ########
     def siftBFCorrespondence(self, image1, image2):
@@ -123,21 +123,33 @@ class Correspondence:
         cv.imshow("Disparity map from OpenCV", dispmap_bm / 255)
 
     ####### STEREO DISPARITY WITH EDGE DETECTOR CANNY / GRADIENT OF GAUSSIAN ########
-    def edgeWithOrbCorrespondence(self, image1, image2):
+    def edgeFastBriefNormHammingCorrespondence(self, image1, image2):
+        # Creating FastFeatureDetector and BriefDescriptorExtractor
+        fast = cv.FastFeatureDetector_create() 
+        brief = cv.xfeatures2d.BriefDescriptorExtractor_create()
+
         # Turning them into grayscale
         grayscaleImage1, grayscaleImage2 = self.imagesToGrayscale(image1, image2)
 
         # Edge feature extraction 
         # detecting GRADIENT OF GAUSSIAN (canny)
-        edgeImage1 = cv.Canny(grayscaleImage1, 125, 175)
-        edgeImage2 = cv.Canny(grayscaleImage2, 125, 175)
+        edgeImage1 = cv.Canny(grayscaleImage1, 100, 200)
+        edgeImage2 = cv.Canny(grayscaleImage2, 100, 200)
 
-        orb = cv.ORB_create()
+        keyPoints1 = fast.detect(edgeImage1, None) #Keypoints of left image
+        keyPoints2 = fast.detect(edgeImage2, None) #Keypoints of right image
 
-        keyPoints1, descriptors1 = orb.detectAndCompute(edgeImage1, None)
-        keyPoints2, descriptors2 = orb.detectAndCompute(edgeImage2, None)
+        keyPoints1, descriptors1 = brief.compute(edgeImage1, keyPoints1)
+        keyPoints2, descriptors2 = brief.compute(edgeImage2, keyPoints2)
         
-        goodMatches = self.goodMatchFinder(descriptors1, descriptors2)
+        normHammingMatch = cv.BFMatcher(cv.NORM_HAMMING, crossCheck=False)
+        matches = normHammingMatch.knnMatch(descriptors1, descriptors2, k=2)
+        goodMatches = []
+        # Find good matches by using distances
+        for m,n in matches:
+            if 0.70*n.distance > m.distance:
+                goodMatches.append(m)
+    
         imageOfMatches= cv.drawMatches(edgeImage1, keyPoints1, edgeImage2, keyPoints2, goodMatches, None ,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
         
         cv.imshow("Image of Matches", imageOfMatches)
