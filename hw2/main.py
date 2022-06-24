@@ -6,9 +6,9 @@ if __name__=='__main__':
     imageSelector = ImageSelecting.ImageSelector()
     rootWidget = tk.Tk()
     rootWidget.title("Main Menu")
-    rootWidget.geometry("650x400")
+    rootWidget.geometry("670x400")
     
-    topTitle = tk.Label(rootWidget, text="Suleyman's Object Detection App", bg="purple", fg="white", font=("Informal Roman", 40))
+    topTitle = tk.Label(rootWidget, text="Suleyman's Feature Matching App", bg="purple", fg="white", font=("Informal Roman", 40))
     topTitle.pack(ipadx=10, ipady=50)
 
     buttonImage1 = tk.Button( rootWidget, text = 'Click to get image 1', font=("Helvetica", 15), 
