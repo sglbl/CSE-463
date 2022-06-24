@@ -49,7 +49,7 @@ class Detection:
 
             cv.imshow("Homography", newImg)
         else:
-            cv.imshow("HomographyNo", image2)
+            cv.imshow("No Homography have been found", image2)
 
     def destFinder(self, height, width, matrix):
         pts = np.float32(   [[0, 0],
@@ -113,4 +113,4 @@ class Detection:
 
             cv.imshow("Homography", newImg)
         else:
-            cv.imshow("HomographyNo", image2)
+            cv.imshow("No Homography have been found", image2)
