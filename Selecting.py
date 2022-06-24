@@ -8,6 +8,11 @@ class Selector:
         print("Opening the screen.")
         self.inputPathOfImages = ["",""]
         self.images = ["",""]
+        self.buttonNo = 1
+    
+    def buttonSelector(self, buttonNo):
+        print("You selected the option " + str(buttonNo.get()))
+        self.buttonNo = buttonNo.get()
         
     def imageSelector(self, imageNumber):
         self.inputPathOfImages[imageNumber-1] = self.filePathFinder()
@@ -20,7 +25,7 @@ class Selector:
         if( (self.images[0] is not None and self.images[1] is not None)):
             if(len(self.images[0]) != 0 and len(self.images[1]) != 0):
                 print("Both images are selected")
-                Detecting.Detection(self.images[0], self.images[1]) # Calling correspondence class
+                Detecting.Detection(self.images[0], self.images[1], self.buttonNo) # Calling correspondence class
 
     def filePathFinder(self):
         currdir = os.getcwd()
