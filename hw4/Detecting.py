@@ -85,7 +85,8 @@ class Detection:
         keyPoints2, descriptors2 = orb.detectAndCompute(grayscaleImage2, None)
 
         goodMatches = self.goodMatchFinder(descriptors1, descriptors2)
-        # imageOfMatches = cv.drawMatches(grayscaleImage1, keyPoints1, grayscaleImage2, keyPoints2, goodMatches, None ,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+        imageOfMatches = cv.drawMatches(image1, keyPoints1, image2, keyPoints2, goodMatches, None ,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+        cv.imshow("Matches", imageOfMatches)
 
         if len(goodMatches) > 7:
             srcPoints = []  # query values

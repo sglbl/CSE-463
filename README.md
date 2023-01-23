@@ -5,10 +5,10 @@
 Homography Estimation
 
 ### [Homework 2](https://github.com/sglbl/CSE-463/tree/main/hw2)
-Image Matching
+Object Recognition With ML
 
 ### [Homework 3](https://github.com/sglbl/CSE-463/tree/main/hw3)
 Stereo Correspondence
 
 ### [Homework 4](https://github.com/sglbl/CSE-463/tree/main/hw4)
-Object Detection
+Object Detection With Feature Matching of Two Images
